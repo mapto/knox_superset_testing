@@ -1,0 +1,1 @@
+The Knox Gateway [topology descriptions](http://knox.apache.org/books/knox-1-2-0/user-guide.html#Gateway+Details).

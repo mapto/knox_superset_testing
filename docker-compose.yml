@@ -1,0 +1,47 @@
+version: '2'
+services:
+  ldap:
+    image: lmccay/knox_sso_testing:knox
+    container_name: kst_ldap
+    command: /ldap.sh
+    ports:
+    # - "127.0.0.1:389:33389"
+    - "172.17.0.1:389:33389"
+
+  superset:
+    build:
+      context: superset
+      args:
+        SUPERSET_VERSION: 0.29.0rc7
+    image: knoxsupersettesting_superset
+    container_name: kst_superset
+    ports:
+    - 8088:8088
+    volumes:
+     - ./logs:/var/log
+    depends_on:
+    - ldap
+
+  knox:
+    build:
+      context: knox
+      args:
+        KNOX_VERSION: 1.2.0
+    # image: lmccay/knox_sso_testing:knox
+    container_name: kst_knox
+    ports:
+    - 8443:8443
+    command: /gateway.sh
+    volumes:
+     - ./topologies:/knox/conf/topologies
+     - ./logs:/knox/logs
+     - ./applications:/knox/data/applications
+     # - ./keystores:/knox/data/security/keystores
+     - ./services/supersetui:/knox/data/services/supersetui
+    depends_on:
+    - superset
+
+networks:
+  default:
+    external:
+      name: example.com
