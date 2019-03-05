@@ -41,7 +41,7 @@ limitations under the License.
         <value>false</value>
         <description>Boolean flag indicating whether the Hadoop cluster protected by Gateway is secured with Kerberos</description>
     </property>
-
+    <!--
     <property>
         <name>java.security.krb5.conf</name>
         <value>/etc/docker-kdc/krb5.conf</value>
@@ -59,6 +59,7 @@ limitations under the License.
         <value>true</value>
         <description>Boolean flag indicating whether to enable debug messages for krb5 authentication</description>
     </property>
+    -->
 
     <!-- @since 0.10 Websocket configs -->
     <property>

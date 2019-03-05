@@ -31,4 +31,4 @@ ADD gateway.sh /gateway.sh
 USER knox
 WORKDIR /knox
 # ENTRYPOINT ["/gateway.sh", "start"]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+# ENTRYPOINT ["tail", "-f", "/dev/null"]
