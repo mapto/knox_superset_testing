@@ -7,9 +7,9 @@ ARG KNOX_VERSION=1.2.0
 
 ENV GATEWAY_HOME /knox
 
-COPY knox-${KNOX_VERSION}.zip /knox-${KNOX_VERSION}.zip
+# COPY knox-${KNOX_VERSION}.zip /knox-${KNOX_VERSION}.zip
 
-# RUN wget -q -O /knox-${KNOX_VERSION}.zip https://dist.apache.org/repos/dist/release/knox/${KNOX_VERSION}/knox-${KNOX_VERSION}.zip && unzip /knox-${KNOX_VERSION}.zip && rm knox-${KNOX_VERSION}.zip && ln -nsf /knox-${KNOX_VERSION} /knox && chmod +x /knox/bin/*.sh && chown -R knox /knox/
+RUN wget -q -O /knox-${KNOX_VERSION}.zip https://dist.apache.org/repos/dist/release/knox/${KNOX_VERSION}/knox-${KNOX_VERSION}.zip && unzip /knox-${KNOX_VERSION}.zip && rm knox-${KNOX_VERSION}.zip && ln -nsf /knox-${KNOX_VERSION} /knox && chmod +x /knox/bin/*.sh && chown -R knox /knox/
 
 RUN unzip /knox-${KNOX_VERSION}.zip && rm knox-${KNOX_VERSION}.zip && ln -nsf /knox-${KNOX_VERSION} /knox && chmod +x /knox/bin/*.sh && chown -R knox /knox/
 

@@ -1,8 +1,10 @@
 #!/bin/bash
 
-set -e
+set -euxo pipefail
 
-# Create an admin user
+# set -e
+
+# Create an admin user - not necessary with LDAP
 fabmanager create-admin --app superset $@
 
 # Initialize the database

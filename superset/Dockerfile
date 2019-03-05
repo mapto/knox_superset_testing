@@ -64,6 +64,8 @@ VOLUME /home/superset \
        /var/log
 WORKDIR /home/superset
 
+RUN ["/usr/local/bin/superset-init", "--username", "root", "--firstname", "root", "--lastname", "root", "--email", "cons.ruskovmartin@sia.eu", "--password", "root-password"]
+
 # Deploy application
 EXPOSE 8088
 HEALTHCHECK CMD ["curl", "-f", "http://localhost:8088/health"]
