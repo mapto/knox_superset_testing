@@ -1,1 +1,1 @@
-The Knox Gateway custom [services definitions](http://knox.apache.org/books/knox-1-2-0/dev-guide.html#Service+Definition+Files).
+The Knox Gateway custom [services definitions](http://knox.apache.org/books/knox-1-2-0/dev-guide.html#Service+Definition+Files) and [rewrite rules](http://knox.apache.org/books/knox-1-2-0/dev-guide.html#Rewrite+Provider) specification.

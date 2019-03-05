@@ -5,18 +5,18 @@ services:
     container_name: kst_ldap
     command: /ldap.sh
     ports:
-    - "127.0.0.1:389:33389"
-    # - "172.17.0.1:389:33389"
+    #- "127.0.0.1:389:33389"
+    - "172.17.0.1:389:33389"
 
   superset:
     build:
       context: superset
       args:
         SUPERSET_VERSION: 0.29.0rc7
-    image: knoxsupersettesting_superset
+    # image: knoxsupersettesting_superset
     container_name: kst_superset
     ports:
-    - 127.0.0.1:8088:8088
+    - 172.17.0.1:8088:8088
     volumes:
      - ./logs:/var/log
     depends_on:

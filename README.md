@@ -9,16 +9,20 @@ Still, there are a few notable differences:
 * Using Knox version 1.2.0
 * No KerberOS
 
-## Setup
+## Installation
+
+To setup:
+
+    docker network create example.com
 
 To start:
 
     docker-compose up -d
 
-Direct access from host machine for testing purposes:
+Access from host machine for testing purposes:
 
-* LDAP: ldap://127.0.0.1:389
-* Superset: http://0.0.0.0:8088
+* LDAP: ldap://172.17.0.1:389
+* Superset: http://172.17.0.1:8088
+* Superset via Knox: https://172.17.0.1:8443
 
- Credentials are loaded from Knox [defaults](https://github.com/apache/knox/blob/master/gateway-release/home/conf/users.ldif).
- 
+Credentials are loaded from Knox [defaults](https://github.com/apache/knox/blob/master/gateway-release/home/conf/users.ldif).

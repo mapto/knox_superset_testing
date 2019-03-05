@@ -55,16 +55,19 @@ RUN useradd -U -m superset && \
     rm requirements.txt
 
 # Configure Filesystem
-COPY superset-init /usr/local/bin
-# COPY superset-demo /usr/local/bin
 COPY config.py /usr/local/lib/python3.6/site-packages/superset
 VOLUME /home/superset \
        /etc/superset \
        /var/lib/superset \
        /var/log
+
 WORKDIR /home/superset
 
-RUN ["/usr/local/bin/superset-init", "--username", "root", "--firstname", "root", "--lastname", "root", "--email", "cons.ruskovmartin@sia.eu", "--password", "root-password"]
+COPY superset.db /var/lib/superset
+
+# COPY superset-init /usr/local/bin
+
+# RUN ["/usr/local/bin/superset-init", "--username", "root", "--firstname", "root", "--lastname", "root", "--email", "root@example.com", "--password", "root-password"]
 
 # Deploy application
 EXPOSE 8088
