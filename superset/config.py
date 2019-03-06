@@ -395,7 +395,7 @@ if not CACHE_DEFAULT_TIMEOUT:
 # Whether to bump the logging level to ERRROR on the flask_appbiulder package
 # Set to False if/when debugging FAB related issues like
 # permission management
-SILENCE_FAB = True
+SILENCE_FAB = False
 
 # The link to a page containing common errors and their resolutions
 # It will be appended at the bottom of sql_lab errors.
