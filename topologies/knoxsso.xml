@@ -16,8 +16,20 @@
   limitations under the License.
 -->
 <topology>
-
     <gateway>
+      <provider>
+        <role>webappsec</role>
+        <name>WebAppSec</name>
+        <enabled>true</enabled>
+        <param>
+            <name>xframe.options.enabled</name>
+            <value>true</value>
+        </param>
+        <param>
+            <name>cors.enabled</name>
+            <value>true</value>
+        </param>
+      </provider>
 
         <provider>
             <role>authentication</role>
@@ -31,6 +43,14 @@
                 -->
                 <name>sessionTimeout</name>
                 <value>30</value>
+            </param>
+            <param>
+                <name>redirectToUrl</name>
+                <value>/gateway/knoxsso/knoxauth/login.html</value>
+            </param>
+            <param>
+                <name>restrictedCookies</name>
+                <value>rememberme,WWW-Authenticate</value>
             </param>
             <param>
                 <name>main.ldapRealm</name>
@@ -50,9 +70,9 @@
             </param>
             <param>
                 <name>main.ldapRealm.contextFactory.url</name>
-                <value>ldap://172.17.0.1:389</value>
-            </param>
-
+                <value>ldap://ldap:33389</value>
+            </param>    
+            
             <param>
                 <name>main.ldapRealm.contextFactory.systemUsername</name>
                 <value>uid=admin,ou=people,dc=hadoop,dc=apache,dc=org</value>
@@ -62,6 +82,10 @@
                 <value>${ALIAS=admin-password}</value>
             </param>
 
+            <param>
+                <name>main.ldapRealm.authenticationCachingEnabled</name>
+                <value>false</value>
+            </param>
             <param>
                 <name>main.ldapRealm.contextFactory.authenticationMechanism</name>
                 <value>simple</value>
@@ -77,26 +101,34 @@
             <name>Default</name>
             <enabled>true</enabled>
         </provider>
-        <!--
+<!--
         <provider>
-            <role>ha</role>
-            <name>HaProvider</name>
+            <role>hostmap</role>
+            <name>static</name>
             <enabled>true</enabled>
-            <param>
-               <name>SUPERSET</name>
-               <value>maxFailoverAttempts=3;failoverSleep=1000;enabled=true</value>
-            </param>
+            <param><name>localhost</name><value>sandbox,sandbox.hortonworks.com</value></param>
         </provider>
-        -->
+-->
     </gateway>
-    <!--
+
+    <application>
+      <name>knoxauth</name>
+    </application>
+
     <service>
-        <role>SOLR</role>
-        <url>http://solr.example.com:8983/solr</url>
+        <role>KNOXSSO</role>
+        <param>
+            <name>knoxsso.cookie.secure.only</name>
+            <value>false</value>
+        </param>
+        <param>
+            <name>knoxsso.token.ttl</name>
+            <value>-1</value>
+        </param>
+        <param>
+           <name>knoxsso.redirect.whitelist.regex</name>
+           <value>^https?:\/\/(localhost|127\.0\.0\.1|172\.17\.0\.1|0:0:0:0:0:0:0:1|::1):[0-9].*$</value>
+        </param>
     </service>
-    -->
-    <service>
-        <role>SUPERSET</role>
-        <url>http://172.17.0.1:8088</url>
-    </service>
+
 </topology>

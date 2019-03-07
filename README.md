@@ -23,6 +23,7 @@ Access from host machine for testing purposes:
 
 * LDAP: ldap://172.17.0.1:389
 * Superset: http://172.17.0.1:8088
-* Superset via Knox: https://172.17.0.1:8443
+* Superset via federation (KnoxSSO): https://172.17.0.1:8443/gateway/sandbox/superset/
+* Superset via basic authentication: https://172.17.0.1:8443/gateway/default/superset/
 
 Credentials are loaded from Knox [defaults](https://github.com/apache/knox/blob/master/gateway-release/home/conf/users.ldif).
