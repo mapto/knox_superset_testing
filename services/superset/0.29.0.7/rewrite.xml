@@ -20,16 +20,21 @@
   <rule dir="IN" name="SUPERSET/superset/inbound/root" pattern="*://*:*/**/superset/">
     <rewrite template="{$serviceUrl[SUPERSET]}/"/>
   </rule>
+  <rule dir="IN" name="SUPERSET/superset/inbound/any" pattern="*://*:*/**/superset/**/">
+    <rewrite template="{$serviceUrl[SUPERSET]}/**/"/>
+  </rule>
   <rule dir="IN" name="SUPERSET/superset/inbound/query" pattern="*://*:*/**/superset/{**}?{**}">
     <rewrite template="{$serviceUrl[SUPERSET]}/{**}?{**}"/>
   </rule>
 
+  <!-- filter rules -->
   <filter name="SUPERSET/superset/outbound/filter/contextpath">
     <content type="application/javascript">
       <apply path="\/superset\/" rule="SUPERSET/superset/outbound/contextpath"/>
     </content>
   </filter>
 
+  <!-- outbound rules -->
   <rule dir="OUT" name="SUPERSET/superset/outbound/contextpath">
     <rewrite template="{$frontend[path]}/superset/"/>
   </rule>

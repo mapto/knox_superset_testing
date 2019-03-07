@@ -32,12 +32,13 @@ services:
     ports:
     - 8443:8443
     command: /gateway.sh
+    # command: tail -f /dev/null
     volumes:
      - ./topologies:/knox/conf/topologies
      - ./logs:/knox/logs
      - ./applications:/knox/data/applications
      # - ./keystores:/knox/data/security/keystores
-     - ./services/supersetui:/knox/data/services/supersetui
+     - ./services/superset:/knox/data/services/superset
     depends_on:
     - superset
 
