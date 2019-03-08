@@ -34,8 +34,24 @@
     </content>
   </filter>
 
+  <filter name="SUPERSET/superset/outbound/headers/welcome">
+    <content type="application/x-http-headers">
+      <apply path="Location" rule="SUPERSET/superset/outbound/headers/location/welcome"/>
+    </content>
+  </filter>
+
   <!-- outbound rules -->
+  <rule dir="OUT" name="SUPERSET/superset/outbound/headers/location/welcome">
+    <match pattern="{scheme}://{host}:{port}/superset/welcome"/>
+    <rewrite template="{$frontend[path]}/superset/superset/welcome"/>
+  </rule>
+
+
   <rule dir="OUT" name="SUPERSET/superset/outbound/contextpath">
     <rewrite template="{$frontend[path]}/superset/"/>
+  </rule>
+
+  <rule dir="OUT" name="SUPERSET/superset/outbound/welcome">
+    <rewrite template="{$frontend[path]}/superset/superset/welcome"/>
   </rule>
 </rules>

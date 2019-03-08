@@ -29,17 +29,17 @@
         <route path="/superset">
             <rewrite apply="SUPERSET/superset/inbound/root" to="request.url"/>
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
-            <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
+            <rewrite apply="SUPERSET/superset/outbound/headers/welcome" to="response.headers"/>
         </route>
         <route path="/superset/**">
             <rewrite apply="SUPERSET/superset/inbound/path" to="request.url"/>
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
-            <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
+            <rewrite apply="SUPERSET/superset/outbound/headers/welcome" to="response.headers"/>
         </route>
         <route path="/superset/**?**">
             <rewrite apply="SUPERSET/superset/inbound/query" to="request.url"/>
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
-            <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
+            <rewrite apply="SUPERSET/superset/outbound/headers/welcome" to="response.headers"/>
         </route>
   <!--
         <route path="/superset/**">

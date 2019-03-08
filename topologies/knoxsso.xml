@@ -21,14 +21,7 @@
         <role>webappsec</role>
         <name>WebAppSec</name>
         <enabled>true</enabled>
-        <param>
-            <name>xframe.options.enabled</name>
-            <value>true</value>
-        </param>
-        <param>
-            <name>cors.enabled</name>
-            <value>true</value>
-        </param>
+        <param><name>xframe.options.enabled</name><value>true</value></param>
       </provider>
 
         <provider>
