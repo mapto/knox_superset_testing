@@ -38,11 +38,17 @@
         </route>
  -->
         
-        <route path="/dummy/login?{**}">
-            <rewrite apply="DUMMY/dummy/inbound/any" to="request.url"/>
+        <route path="/dummy/login">
+            <rewrite apply="DUMMY/dummy/inbound/login" to="request.url"/>
             <rewrite apply="DUMMY/dummy/outbound/links" to="response.body"/>
             <rewrite apply="DUMMY/dummy/outbound/headers" to="response.headers"/>
         </route>
+        <route path="/dummy/logout">
+            <rewrite apply="DUMMY/dummy/inbound/logout" to="request.url"/>
+            <rewrite apply="DUMMY/dummy/outbound/links" to="response.body"/>
+            <rewrite apply="DUMMY/dummy/outbound/headers" to="response.headers"/>
+        </route>
+
         <route path="/dummy/**">
             <rewrite apply="DUMMY/dummy/inbound/any" to="request.url"/>
             <rewrite apply="DUMMY/dummy/outbound/links" to="response.body"/>

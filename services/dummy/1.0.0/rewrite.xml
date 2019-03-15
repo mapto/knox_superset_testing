@@ -68,8 +68,17 @@
   <rule dir="OUT" name="DUMMY/dummy/outbound/links" pattern="/">
     <rewrite template="{$frontend[path]}/dummy/"/>
   </rule>
-  <rule dir="OUT" name="DUMMY/dummy/outbound/links" pattern="/login/">
-    <rewrite template="{$frontend[path]}/dummy/login/"/>
+  <rule dir="OUT" name="DUMMY/dummy/outbound/links" pattern="/logout/">
+    <rewrite template="{$frontend[path]}/dummy/logout/"/>
+  </rule>
+  <rule dir="OUT" name="DUMMY/dummy/outbound/links" pattern="/logout/?{**}">
+    <rewrite template="{$frontend[path]}/dummy/logout/?{**}"/>
+  </rule>
+  <rule dir="OUT" name="DUMMY/dummy/outbound/links" pattern="/users/{**}?{**}">
+    <rewrite template="{$frontend[path]}/dummy/users/{**}?{**}"/>
+  </rule>
+  <rule dir="OUT" name="DUMMY/dummy/outbound/links" pattern="/users/userinfo/?{**}">
+    <rewrite template="{$frontend[path]}/dummy/users/userinfo/?{**}"/>
   </rule>
   <rule dir="OUT" name="DUMMY/dummy/outbound/links" pattern="/static/{**}">
     <rewrite template="{$frontend[path]}/dummy/static/{**}"/>
@@ -77,21 +86,42 @@
   <rule dir="OUT" name="DUMMY/dummy/outbound/links" pattern="/lang/{**}">
     <rewrite template="{$frontend[path]}/dummy/lang/{**}"/>
   </rule>
- 
 
+<!--  
   <rule dir="OUT" name="DUMMY/dummy/outbound/login/headers/location" pattern="*://*:*/login/?{**}">
     <rewrite template="{$frontend[url]}/dummy/"/>
   </rule>
+ -->
 <!-- 
   <rule dir="OUT" name="DUMMY/dummy/outbound/headers/location" pattern="*://*:*/{**}?{**}">
     <rewrite template="{$frontend[url]}/dummy/{**}?{**}"/>
   </rule>
  -->
+<!-- 
+  <rule dir="OUT" name="DUMMY/dummy/outbound/login/headers/location" pattern="*://*:*/{path=**}?{params=**}">
+    <rewrite template="{$frontend[url]}/dummy/{path=**}?{params=**}"/>
+  </rule>
+ -->
+<!-- 
+  <rule dir="OUT" name="DUMMY/dummy/outbound/login/headers/location" pattern="http://172.17.0.1/autologin/?user.name=sam">
+    <rewrite template="{$frontend[url]}/dummy/autologin/?user.name=sam"/>
+  </rule>
+ -->
 
+  <rule dir="OUT" name="DUMMY/dummy/outbound/login/headers/location" flow="OR">
+    <match pattern="*://*:*/login/?{**}">
+      <rewrite template="{$frontend[url]}/dummy/login/?{**}"/>
+    </match>
+    <match pattern="*://*:*/login?{**}">
+      <rewrite template="{$frontend[url]}/dummy/login/?{**}"/>
+    </match>
+  </rule>
+
+<!-- 
   <rule dir="OUT" name="DUMMY/dummy/outbound/headers/location" pattern="*://*:*/?{**}">
     <rewrite template="{$frontend[url]}/dummy/?{**}"/>
   </rule>
-
+ -->
 <!-- 
   <rule dir="OUT" name="DUMMY/dummy/outbound/headers/location" flow="OR">
     <match pattern="*://*:*/{**}?{**}">
