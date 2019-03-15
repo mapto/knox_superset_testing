@@ -20,38 +20,67 @@
   <rule dir="IN" name="SUPERSET/superset/inbound/root" pattern="*://*:*/**/superset/">
     <rewrite template="{$serviceUrl[SUPERSET]}/"/>
   </rule>
-  <rule dir="IN" name="SUPERSET/superset/inbound/any" pattern="*://*:*/**/superset/**/">
-    <rewrite template="{$serviceUrl[SUPERSET]}/**/"/>
+  <rule dir="IN" name="SUPERSET/superset/inbound/login" pattern="*://*:*/**/superset/login">
+    <rewrite template="{$serviceUrl[SUPERSET]}/login"/>
+  </rule>
+  <rule dir="IN" name="SUPERSET/superset/inbound/any" pattern="*://*:*/**/superset/{**}">
+    <rewrite template="{$serviceUrl[SUPERSET]}/{**}"/>
   </rule>
   <rule dir="IN" name="SUPERSET/superset/inbound/query" pattern="*://*:*/**/superset/{**}?{**}">
     <rewrite template="{$serviceUrl[SUPERSET]}/{**}?{**}"/>
   </rule>
 
   <!-- filter rules -->
+<!-- 
   <filter name="SUPERSET/superset/outbound/filter/contextpath">
     <content type="application/javascript">
       <apply path="\/superset\/" rule="SUPERSET/superset/outbound/contextpath"/>
     </content>
   </filter>
+ -->
 
-  <filter name="SUPERSET/superset/outbound/headers/welcome">
+  <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/">
+    <rewrite template="{$frontend[path]}/superset/"/>
+  </rule>
+  <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/superset/{**}">
+    <rewrite template="{$frontend[path]}/superset/superset/{**}"/>
+  </rule>
+  <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/login/">
+    <rewrite template="{$frontend[path]}/superset/login/"/>
+  </rule>
+  <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/static/{**}">
+    <rewrite template="{$frontend[path]}/superset/static/{**}"/>
+  </rule>
+  <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/lang/{**}">
+    <rewrite template="{$frontend[path]}/superset/lang/{**}"/>
+  </rule>
+ 
+
+  <filter name="SUPERSET/superset/outbound/headers">
     <content type="application/x-http-headers">
-      <apply path="Location" rule="SUPERSET/superset/outbound/headers/location/welcome"/>
+      <apply path="Location" rule="SUPERSET/superset/outbound/login/headers/location"/>
     </content>
   </filter>
 
   <!-- outbound rules -->
-  <rule dir="OUT" name="SUPERSET/superset/outbound/headers/location/welcome">
-    <match pattern="{scheme}://{host}:{port}/superset/welcome"/>
-    <rewrite template="{$frontend[path]}/superset/superset/welcome"/>
+  <rule dir="OUT" name="SUPERSET/superset/outbound/login/headers/location" pattern="*://*:*/{**}">
+    <rewrite template="{$frontend[url]}/superset/{**}/"/>
   </rule>
-
-
+  <rule dir="OUT" name="SUPERSET/superset/outbound/login/headers/location" pattern="*://*:*/?{**}">
+    <rewrite template="{$frontend[url]}/superset/?{**}"/>
+  </rule>
+  <rule dir="OUT" name="SUPERSET/superset/outbound/login/headers/location" pattern="*://*:*/{**}?{**}">
+    <rewrite template="{$frontend[url]}/superset/{**}?{**}"/>
+  </rule>
+<!-- 
   <rule dir="OUT" name="SUPERSET/superset/outbound/contextpath">
     <rewrite template="{$frontend[path]}/superset/"/>
   </rule>
-
-  <rule dir="OUT" name="SUPERSET/superset/outbound/welcome">
-    <rewrite template="{$frontend[path]}/superset/superset/welcome"/>
+ -->
+<!-- 
+  <rule dir="OUT" name="SUPERSET/superset/outbound/params">
+    <match pattern="/{**}"/>
+    <rewrite template="{$frontend[path]}/{**}"/>
   </rule>
+ -->
 </rules>

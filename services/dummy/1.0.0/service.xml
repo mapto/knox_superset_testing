@@ -17,7 +17,46 @@
 -->
 <service role="DUMMY" name="dummy" version="1.0.0">
     <routes>
+        <route path="/dummy">
+            <rewrite apply="DUMMY/dummy/inbound/root" to="request.url"/>
+            <rewrite apply="DUMMY/dummy/outbound/links" to="response.body"/>
+            <!-- <rewrite apply="DUMMY/dummy/outbound/filter/contextpath" to="response.body"/> -->
+<!-- 
+            <rewrite apply="DUMMY/dummy/outbound/body" to="response.body"/>
+ -->
+            <!-- <rewrite apply="DUMMY/dummy/outbound/headers" to="response.headers"/> -->
+        </route>
+<!-- 
+        <route path="/dummy/login">
+            <rewrite apply="DUMMY/dummy/inbound/login" to="request.url"/>
+            <rewrite apply="DUMMY/dummy/outbound/links" to="response.body"/>
+            <rewrite apply="DUMMY/dummy/outbound/headers" to="response.headers"/>
+        </route>
+         <route path="/dummy/logout">
+            <rewrite apply="DUMMY/dummy/inbound/logout" to="request.url"/>
+            <rewrite apply="DUMMY/dummy/outbound/links" to="response.body"/>
+        </route>
+ -->
+        
+        <route path="/dummy/login?{**}">
+            <rewrite apply="DUMMY/dummy/inbound/any" to="request.url"/>
+            <rewrite apply="DUMMY/dummy/outbound/links" to="response.body"/>
+            <rewrite apply="DUMMY/dummy/outbound/headers" to="response.headers"/>
+        </route>
         <route path="/dummy/**">
+            <rewrite apply="DUMMY/dummy/inbound/any" to="request.url"/>
+            <rewrite apply="DUMMY/dummy/outbound/links" to="response.body"/>
+            <!-- <rewrite apply="DUMMY/dummy/outbound/filter/contextpath" to="response.body"/> -->
+            <!-- <rewrite apply="DUMMY/dummy/outbound/body" to="response.body"/> -->
+            <!-- <rewrite apply="DUMMY/dummy/outbound/headers" to="response.headers"/> -->
+        </route>
+        <route path="/dummy/**?**">
+            <rewrite apply="DUMMY/dummy/inbound/query" to="request.url"/>
+            <rewrite apply="DUMMY/dummy/outbound/links" to="response.body"/>
+            <!-- <rewrite apply="DUMMY/dummy/outbound/filter/contextpath" to="response.body"/> -->
+            <!-- <rewrite apply="DUMMY/dummy/outbound/body" to="response.body"/> -->
+            <!-- <rewrite apply="DUMMY/dummy/outbound/headers" to="response.headers"/> -->
         </route>
     </routes>
+    <dispatch classname="org.apache.hadoop.gateway.dispatch.PassAllHeadersDispatch"/>
 </service>

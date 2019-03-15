@@ -112,7 +112,8 @@
         <role>KNOXSSO</role>
         <param>
             <name>knoxsso.cookie.secure.only</name>
-            <value>false</value>
+            <!-- <value>false</value> -->
+            <value>true</value>
         </param>
         <param>
             <name>knoxsso.token.ttl</name>

@@ -97,6 +97,12 @@
     -->
     <service>
         <role>SUPERSET</role>
+        <!-- <url>http://172.17.0.1:8080</url> -->
         <url>http://172.17.0.1:8088</url>
+    </service>
+    <service>
+        <role>DUMMY</role>
+        <url>http://172.17.0.1:8080</url>
+        <!-- <url>http://172.17.0.1:8088</url> -->
     </service>
 </topology>

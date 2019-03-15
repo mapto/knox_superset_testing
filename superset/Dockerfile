@@ -17,6 +17,8 @@ ENV GUNICORN_BIND=0.0.0.0:8088 \
     SUPERSET_HOME=/var/lib/superset
 ENV GUNICORN_CMD_ARGS="--workers ${GUNICORN_WORKERS} --timeout ${GUNICORN_TIMEOUT} --bind ${GUNICORN_BIND} --limit-request-line ${GUNICORN_LIMIT_REQUEST_LINE} --limit-request-field_size ${GUNICORN_LIMIT_REQUEST_FIELD_SIZE}"
 
+COPY requirements.txt .
+
 # Create superset user & install dependencies
 RUN useradd -U -m superset && \
     mkdir /etc/superset  && chown -R superset:superset /etc/superset && \
@@ -25,6 +27,7 @@ RUN useradd -U -m superset && \
     apt-get install -y \
         build-essential \
         curl \
+        mlocate \
         # default-libmysqlclient-dev \
         # freetds-dev \
         # freetds-bin \
@@ -34,30 +37,18 @@ RUN useradd -U -m superset && \
         libsasl2-dev \
         libldap2-dev && \
     apt-get clean && rm -r /var/lib/apt/lists/* && \
-    curl https://raw.githubusercontent.com/${SUPERSET_REPO}/${SUPERSET_VERSION}/requirements.txt -o requirements.txt && \
+    curl https://raw.githubusercontent.com/${SUPERSET_REPO}/${SUPERSET_VERSION}/requirements.txt -o requirements.superset.txt && \
+    pip install --no-cache-dir -r requirements.superset.txt && \
     pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir \
-        # Werkzeug==0.14.1 \
-        # flask-cors==3.0.3 \
-        # flask-mail==0.9.1 \
-        # gevent==1.2.2 \
-        # impyla==0.14.0 \
-        # infi.clickhouse-orm==1.0.2 \
-        # mysqlclient==1.3.7 \
-        # psycopg2==2.6.1 \
-        # pyathena==1.2.5 \
-        # pyhive==0.5.1 \
-        pyldap==2.4.28 \
-        # redis==2.10.5 \
-        # sqlalchemy-clickhouse==0.1.5.post0 \
-        # sqlalchemy-redshift==0.7.1 \
-        superset==${SUPERSET_VERSION} && \
-    rm requirements.txt
+    pip install --no-cache-dir superset==${SUPERSET_VERSION} && \
+    rm requirements.*
 
 # Configure Filesystem
 COPY config.py /usr/local/lib/python3.6/site-packages/superset
+COPY knox_auth.py /usr/local/lib/python3.6/site-packages/superset
 VOLUME /home/superset \
        /etc/superset \
+       /etc/ssl/keystores \
        /var/lib/superset \
        /var/log
 

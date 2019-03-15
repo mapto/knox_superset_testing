@@ -37,8 +37,8 @@
                 <value>https://172.17.0.1:8443/gateway/knoxsso/api/v1/websso</value>
             </param>
         </provider>
-
-<!--         <provider>
+<!--
+        <provider>
             <role>identity-assertion</role>
             <name>Default</name>
             <enabled>true</enabled>
@@ -72,6 +72,12 @@
 
     <service>
         <role>SUPERSET</role>
+        <!-- <url>http://172.17.0.1:8080</url> -->
         <url>http://172.17.0.1:8088</url>
+    </service>
+    <service>
+        <role>DUMMY</role>
+        <url>http://172.17.0.1:8080</url>
+        <!-- <url>http://172.17.0.1:8088</url> -->
     </service>
 </topology>

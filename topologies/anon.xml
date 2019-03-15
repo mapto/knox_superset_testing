@@ -17,6 +17,7 @@
 -->
 <topology>
     <gateway>
+      <!--
       <provider>
         <role>webappsec</role>
         <name>WebAppSec</name>
@@ -30,26 +31,27 @@
             <value>true</value>
         </param>
       </provider>
+      -->
+      <provider>
+          <role>authentication</role>
+          <name>Anonymous</name>
+          <enabled>true</enabled>
+      </provider>
 
-        <provider>
-            <role>authentication</role>
-            <name>Anonymous</name>
-            <enabled>true</enabled>
-        </provider>
-
-        <provider>
-            <role>identity-assertion</role>
-            <!-- <name>JWTAccessTokenAsserter</name> -->
-            <name>JWTAuthCodeAsserter</name>
-            <enabled>true</enabled>
-        </provider>
+      <provider>
+          <role>identity-assertion</role>
+          <!-- <name>JWTAccessTokenAsserter</name> -->
+          <!-- <name>JWTAuthCodeAsserter</name> -->
+          <name>Default</name>
+          <enabled>true</enabled>
+      </provider>
 <!--
-        <provider>
-            <role>hostmap</role>
-            <name>static</name>
-            <enabled>true</enabled>
-            <param><name>localhost</name><value>sandbox,sandbox.hortonworks.com</value></param>
-        </provider>
+      <provider>
+          <role>hostmap</role>
+          <name>static</name>
+          <enabled>true</enabled>
+          <param><name>localhost</name><value>sandbox,sandbox.hortonworks.com</value></param>
+      </provider>
 -->
     </gateway>
 
@@ -61,7 +63,8 @@
         <role>KNOXSSO</role>
         <param>
             <name>knoxsso.cookie.secure.only</name>
-            <value>false</value>
+            <!-- <value>false</value> -->
+            <value>true</value>
         </param>
         <param>
             <name>knoxsso.token.ttl</name>
@@ -73,4 +76,12 @@
         </param>
     </service>
 
+    <service>
+        <role>SUPERSET</role>
+        <url>http://172.17.0.1:8088</url>
+    </service>
+    <service>
+        <role>DUMMY</role>
+        <url>http://172.17.0.1:8080</url>
+    </service>
 </topology>

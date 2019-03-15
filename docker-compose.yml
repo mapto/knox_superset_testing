@@ -19,6 +19,7 @@ services:
     - 172.17.0.1:8088:8088
     volumes:
      - ./logs:/var/log
+     - ./keystores:/etc/ssl/keystores
     depends_on:
     - ldap
 
@@ -37,8 +38,10 @@ services:
      - ./topologies:/knox/conf/topologies
      - ./logs:/knox/logs
      - ./applications:/knox/data/applications
-     # - ./keystores:/knox/data/security/keystores
+     # - ./security:/knox/data/security
+     - ./keystores:/knox/data/security/keystores
      - ./services/superset:/knox/data/services/superset
+     - ./services/dummy:/knox/data/services/dummy
     depends_on:
     - superset
 

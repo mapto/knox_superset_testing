@@ -19,9 +19,8 @@
 <!--
     <policies>
         <policy role="webappsec"/>
-        <policy role="authentication" name="guest"/>
+        <policy role="authentication" name="sam"/>
         <policy role="rewrite"/>
-        <policy role="identity-assertion"/>
         <policy role="authorization"/>
     </policies>
 -->
@@ -29,17 +28,24 @@
         <route path="/superset">
             <rewrite apply="SUPERSET/superset/inbound/root" to="request.url"/>
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
-            <rewrite apply="SUPERSET/superset/outbound/headers/welcome" to="response.headers"/>
+            <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
         </route>
-        <route path="/superset/**">
-            <rewrite apply="SUPERSET/superset/inbound/path" to="request.url"/>
+<!-- 
+        <route path="/superset/login">
+            <rewrite apply="SUPERSET/superset/inbound/root" to="request.url"/>
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
-            <rewrite apply="SUPERSET/superset/outbound/headers/welcome" to="response.headers"/>
+            <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
+        </route>
+ -->
+        <route path="/superset/**">
+            <rewrite apply="SUPERSET/superset/inbound/any" to="request.url"/>
+            <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
+            <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
         </route>
         <route path="/superset/**?**">
             <rewrite apply="SUPERSET/superset/inbound/query" to="request.url"/>
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
-            <rewrite apply="SUPERSET/superset/outbound/headers/welcome" to="response.headers"/>
+            <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
         </route>
   <!--
         <route path="/superset/**">
