@@ -45,12 +45,18 @@ SUPERSET_WEBSERVER_PORT = 8088
 SUPERSET_WEBSERVER_TIMEOUT = 60  # deprecated
 SUPERSET_DASHBOARD_POSITION_DATA_LIMIT = 65535
 EMAIL_NOTIFICATIONS = False
+
 CUSTOM_SECURITY_MANAGER = None
+# from .knox_auth import BasicAuthSecurityManager
+# from .knox_auth import JwtSecurityManager
+# CUSTOM_SECURITY_MANAGER = JwtSecurityManager
+
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 # ---------------------------------------------------------
 
 # Your App secret key
-SECRET_KEY = '\2\1thisismyscretkey\1\2\e\y\y\h'  # noqa
+# SECRET_KEY = '\2\1thisismyscretkey\1\2\e\y\y\h'  # noqa
+SECRET_KEY = 'knox'
 
 # The SQLAlchemy connection string.
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(DATA_DIR, 'superset.db')
@@ -83,7 +89,7 @@ FLASK_USE_RELOAD = True
 SHOW_STACKTRACE = True
 
 # Extract and use X-Forwarded-For/X-Forwarded-Proto headers?
-ENABLE_PROXY_FIX = False
+ENABLE_PROXY_FIX = True
 
 # ------------------------------
 # GLOBALS FOR APP Builder

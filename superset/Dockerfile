@@ -46,6 +46,9 @@ RUN useradd -U -m superset && \
 # Configure Filesystem
 COPY config.py /usr/local/lib/python3.6/site-packages/superset
 COPY knox_auth.py /usr/local/lib/python3.6/site-packages/superset
+COPY __init__.py /usr/local/lib/python3.6/site-packages/superset
+COPY launcher.sh /
+
 VOLUME /home/superset \
        /etc/superset \
        /etc/ssl/keystores \
@@ -64,4 +67,5 @@ COPY superset.db /var/lib/superset
 EXPOSE 8088
 HEALTHCHECK CMD ["curl", "-f", "http://localhost:8088/health"]
 # ENTRYPOINT ["gunicorn", "superset:app", "--access-logfile", "/var/log/superset.out", "--error-logfile", "/var/log/superset.err", "--log-level", "DEBUG"]
-ENTRYPOINT ["gunicorn", "superset:app", "--access-logfile", "/var/log/superset.out", "--error-logfile", "/var/log/superset.err"]
+# ENTRYPOINT ["gunicorn", "superset:app", "--access-logfile", "/var/log/superset.out", "--error-logfile", "/var/log/superset.err"]
+CMD ["tail", "-f", "/dev/null"]

@@ -17,6 +17,7 @@ services:
     container_name: kst_superset
     ports:
     - 172.17.0.1:8088:8088
+    command: /launcher.sh
     volumes:
      - ./logs:/var/log
      - ./keystores:/etc/ssl/keystores
