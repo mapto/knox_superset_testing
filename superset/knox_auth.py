@@ -128,7 +128,7 @@ def parse_hadoop_jwt():
     log.info("Username %s"%username)
     # user = security_manager.find_user(username)
     # import ipdb; ipdb.set_trace()
-    user = security_manager.find_user("admin")
+    user = security_manager.find_user("admin") # TODO: might be needed to fetch a user from LDAP before locating it locally. See AuthLDAPView in https://github.com/dpgaspar/Flask-AppBuilder/blob/master/flask_appbuilder/security/views.py
     if not user:
         log.info("Authentication failed for user: %s"%user)
         return redirect(auth_url)
