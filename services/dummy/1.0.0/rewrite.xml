@@ -38,6 +38,15 @@
       <apply path="Location" rule="DUMMY/dummy/outbound/login/headers/location"/>
     </content>
   </filter>
+  <filter name="DUMMY/dummy/outbound/logout/headers">
+    <content type="application/x-http-headers">
+      <apply path="Set-Cookie" rule="DUMMY/dummy/outbound/logout/headers/cookie"/>
+    </content>
+    <content type="application/x-http-headers">
+      <apply path="Location" rule="DUMMY/dummy/outbound/logout/headers/location"/>
+    </content>
+  </filter>
+
 
   <!-- outbound rules -->
   <!--not working-->
@@ -116,6 +125,18 @@
       <rewrite template="{$frontend[url]}/dummy/login/?{**}"/>
     </match>
   </rule>
+  <rule dir="OUT" name="DUMMY/dummy/outbound/logout/headers/location">
+      <rewrite template="{$frontend[url]}/dummy/"/>
+      <!-- <rewrite template="{gateway.url}/dummy/{**}?{**}"/> -->
+      <!-- <rewrite template="{scheme}://{host}:{port}/{gateway}/{knoxsso}/{api}/{v1}/{websso}?originalUrl={$postfix[url,/dummy/]}"/> -->
+  </rule>
+  <rule dir="OUT" name="DUMMY/dummy/outbound/logout/headers/cookie">
+      <rewrite template="hadoop-jwt=empty; session=empty; remember_token=0|empty"/>
+      <!-- <rewrite template="{$frontend[url]}/dummy/"/> -->
+      <!-- <rewrite template="{gateway.url}/dummy/{**}?{**}"/> -->
+      <!-- <rewrite template="{scheme}://{host}:{port}/{gateway}/{knoxsso}/{api}/{v1}/{websso}?originalUrl={$postfix[url,/dummy/]}"/> -->
+  </rule>
+
 
 <!-- 
   <rule dir="OUT" name="DUMMY/dummy/outbound/headers/location" pattern="*://*:*/?{**}">

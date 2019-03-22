@@ -21,7 +21,10 @@
         <role>webappsec</role>
         <name>WebAppSec</name>
         <enabled>true</enabled>
-        <param><name>xframe.options.enabled</name><value>true</value></param>
+        <param>
+            <name>xframe.options.enabled</name>
+            <value>true</value>
+        </param>
       </provider>
 
         <provider>
@@ -39,7 +42,8 @@
             </param>
             <param>
                 <name>redirectToUrl</name>
-                <value>/gateway/knoxsso/knoxauth/login.html</value>
+                <!-- also specified in gateway-site.xml -->
+                <value>/gateway-ti/knoxsso/knoxauth/login.html</value>
             </param>
             <param>
                 <name>restrictedCookies</name>
@@ -63,7 +67,8 @@
             </param>
             <param>
                 <name>main.ldapRealm.contextFactory.url</name>
-                <value>ldap://ldap:33389</value>
+                <!-- <value>ldap://ldap:33389</value> -->
+                <value>ldap://172.17.0.1:389</value>
             </param>    
             
             <param>
@@ -92,7 +97,7 @@
         <provider>
             <role>identity-assertion</role>
             <name>Default</name>
-            <enabled>true</enabled>
+            <enabled>false</enabled>
         </provider>
 <!--
         <provider>

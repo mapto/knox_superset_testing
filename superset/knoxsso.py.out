@@ -1,0 +1,16 @@
+from flask import redirect
+from flask_appbuilder.security.views import UserLDAPModelView
+from flask_appbuilder.security.sqla.manager import SecurityManager
+from flask_appbuilder.actions import action
+
+
+class KnoxLDAPView(UserLDAPModelView):
+    @action("muldelete", "Delete", "Delete all Really?", "fa-cloud", single=False)
+    def muldelete(self, items):
+        self.datamodel.delete_all(items)
+        self.update_redirect()
+        return redirect(self.get_redirect())
+
+
+class KnoxSSOSecurityManager(SecurityManager):
+    userdbmodelview = MyUserDBView

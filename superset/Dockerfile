@@ -18,7 +18,6 @@ ENV GUNICORN_BIND=0.0.0.0:8088 \
 ENV GUNICORN_CMD_ARGS="--workers ${GUNICORN_WORKERS} --timeout ${GUNICORN_TIMEOUT} --bind ${GUNICORN_BIND} --limit-request-line ${GUNICORN_LIMIT_REQUEST_LINE} --limit-request-field_size ${GUNICORN_LIMIT_REQUEST_FIELD_SIZE}"
 
 COPY requirements.txt .
-
 # Create superset user & install dependencies
 RUN useradd -U -m superset && \
     mkdir /etc/superset  && chown -R superset:superset /etc/superset && \
@@ -27,12 +26,6 @@ RUN useradd -U -m superset && \
     apt-get install -y \
         build-essential \
         curl \
-        mlocate \
-        # default-libmysqlclient-dev \
-        # freetds-dev \
-        # freetds-bin \
-        # libffi-dev \
-        # libpq-dev \
         libssl1.0 \
         libsasl2-dev \
         libldap2-dev && \
@@ -44,6 +37,8 @@ RUN useradd -U -m superset && \
     rm requirements.*
 
 # Configure Filesystem
+# ENV SUPERSET_CONFIG_PATH=/home/superset/superset_config.py
+# COPY superset_config.py /home/superset
 COPY config.py /usr/local/lib/python3.6/site-packages/superset
 COPY knox_auth.py /usr/local/lib/python3.6/site-packages/superset
 COPY __init__.py /usr/local/lib/python3.6/site-packages/superset

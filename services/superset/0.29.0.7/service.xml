@@ -19,7 +19,7 @@
 <!--
     <policies>
         <policy role="webappsec"/>
-        <policy role="authentication" name="sam"/>
+        <policy role="authentication" name="ShiroProvider"/>
         <policy role="rewrite"/>
         <policy role="authorization"/>
     </policies>
@@ -30,43 +30,43 @@
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
             <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
         </route>
+        <route path="/superset/{**}">
+            <rewrite apply="SUPERSET/superset/inbound/any" to="request.url"/>
+            <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
+            <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
+        </route>
+
+        <route path="/superset/superset/welcome">
+            <rewrite apply="SUPERSET/superset/inbound/welcome" to="request.url"/>
+            <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
+            <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
+        </route>
 <!-- 
-        <route path="/superset/login">
-            <rewrite apply="SUPERSET/superset/inbound/root" to="request.url"/>
+        <route path="/superset/dashboardmodelview/list/">
+            <rewrite apply="SUPERSET/superset/inbound/dashboard" to="request.url"/>
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
             <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
         </route>
  -->
-        <route path="/superset/**">
-            <rewrite apply="SUPERSET/superset/inbound/any" to="request.url"/>
+<!--         
+        <route path="/superset/dashboard/list">
+            <rewrite apply="SUPERSET/superset/inbound/dashboard" to="request.url"/>
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
             <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
         </route>
-        <route path="/superset/**?**">
-            <rewrite apply="SUPERSET/superset/inbound/query" to="request.url"/>
+ -->
+        <route path="/superset/superset/sqllab">
+            <rewrite apply="SUPERSET/superset/inbound/sqllab" to="request.url"/>
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
             <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
         </route>
-  <!--
-        <route path="/superset/**">
+<!-- 
+        <route path="/superset/users/userinfo">
+            <rewrite apply="SUPERSET/superset/inbound/userinfo" to="request.url"/>
+            <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
+            <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
         </route>
-        <route path="/superset/">
-            <rewrite apply="SUPERSET/superset/inbound/root" to="request.url"/>
-            <rewrite apply="SUPERSET/superset/outbound/filter/contextpath" to="response.body"/>
-        </route>
-        <route path="/superset/**">
-            <rewrite apply="SUPERSET/superset/inbound/any" to="request.url"/>
-            <rewrite apply="SUPERSET/superset/outbound/filter/contextpath" to="response.body"/>
-        </route>
-        <route path="/superset/**/">
-            <rewrite apply="SUPERSET/superset/inbound/any" to="request.url"/>
-            <rewrite apply="SUPERSET/superset/outbound/filter/contextpath" to="response.body"/>
-        </route>
-        <route path="/superset/**?**">
-            <rewrite apply="SUPERSET/superset/inbound/query" to="request.url"/>
-            <rewrite apply="SUPERSET/superset/outbound/filter/contextpath" to="response.body"/>
-        </route>
--->
+ -->
     </routes>
     <dispatch classname="org.apache.hadoop.gateway.dispatch.PassAllHeadersDispatch"/>
 </service>

@@ -21,6 +21,8 @@ limitations under the License.
     <property>
         <name>gateway.port</name>
         <value>8443</value>
+        <!-- <value>80</value> -->
+        <!-- need to be specified also in topology *.xml files and superset_config.py -->
         <description>The HTTP port for the Gateway.</description>
     </property>
 

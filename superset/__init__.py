@@ -213,8 +213,7 @@ from superset import views  # noqa
 
 @app.before_request
 def parse_jwt():
-    logging.info("Start before call")
+    logging.info("Attaching JWT handler")
     from .knox_auth import parse_hadoop_jwt
-    logging.info("Import done")
     return parse_hadoop_jwt()
 

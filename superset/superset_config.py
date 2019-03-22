@@ -1,4 +1,39 @@
-import base64
+SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
+SUPERSET_WEBSERVER_PORT = 8088
+ENABLE_PROXY_FIX = True
+
+
+SECRET_KEY = 'knox'
+
+
+DEBUG = True
+SILENCE_FAB = False
+
+from flask_appbuilder.security.manager import AUTH_LDAP
+AUTH_TYPE = AUTH_LDAP
+AUTH_USER_REGISTRATION = True
+AUTH_USER_REGISTRATION_ROLE = "Admin"
+
+AUTH_LDAP_SERVER = "ldap://172.17.0.1"
+
+AUTH_LDAP_USE_TLS = False
+AUTH_LDAP_SEARCH = "dc=hadoop,dc=apache,dc=org"
+AUTH_LDAP_BIND_USER = "uid=admin,ou=people,dc=hadoop,dc=apache,dc=org"
+AUTH_LDAP_BIND_PASSWORD = "admin-password"
+
+def attach_handler(app):
+    app.before_request = parse_hadoop_jwt
+
+FLASK_APP_MUTATOR = lambda app: attach_handler(app)
+
+# Locally used variables
+JKS_FILE = "/etc/ssl/keystores/gateway.jks"
+SESSION_JWT_KEY = "hadoop-jwt="
+# Requires changes also in KnoxSSO's gateway-site.xml and sandbox.xml
+AUTH_SERVICE_URL = "https://172.17.0.1:8443/gateway-ti/knoxsso/knoxauth/login.html?originalUrl=https://172.17.0.1:8443/gateway-ti/sandbox/superset"
+
+
+# import base64
 import jwt
 import jks
 from OpenSSL import crypto
@@ -16,30 +51,26 @@ from superset.security import SupersetSecurityManager
 
 import logging
 log = logging.getLogger(__name__)
+log.info("Importing custom config...")
 
-from . import config
-
-jks_file = "/etc/ssl/keystores/gateway.jks"
-session_jwt_key = "hadoop-jwt="
-
-def pem_publickey(pkey):
+def _pem_publickey(pkey):
     """ Format a public key as a PEM. From https://stackoverflow.com/a/30929459/1827854"""
     bio = crypto._new_mem_buf()
     cryptolib.PEM_write_bio_PUBKEY(bio, pkey._pkey)
     return crypto._bio_to_string(bio)
 
-def open_jks(jks_file):
-    ks = jks.KeyStore.load(jks_file, config.SECRET_KEY)
+def _read_jks_publickey(jks_file):
+    ks = jks.KeyStore.load(jks_file, SECRET_KEY)
     private_key = ks.entries['gateway-identity']
-    private_key.decrypt(config.SECRET_KEY)
+    private_key.decrypt(SECRET_KEY)
     public_key = crypto.load_certificate(crypto.FILETYPE_ASN1, private_key.cert_chain[0][1]).get_pubkey()
-    return pem_publickey(public_key).decode()
+    return _pem_publickey(public_key).decode()
 
 def _get_jwt_username(token):
-    jks_secret = open_jks(jks_file)
+    secret = _read_jks_publickey(JKS_FILE)
 
-    log.info("Secret is %s"%(jks_secret))
-    contents = jwt.decode(token, jks_secret)
+    log.info("Secret is %s"%(secret))
+    contents = jwt.decode(token, secret)
     username = contents['sub']
     log.info("Username %s"%(username))
     return username
@@ -49,21 +80,21 @@ def _get_jwt_token(cookie_header):
         return None
     for c in cookie_header.split(";"):
         cookie = c.strip()
-        if cookie.startswith(session_jwt_key):
-            jwt_token = cookie.strip()[len(session_jwt_key):]
+        if cookie.startswith(SESSION_JWT_KEY):
+            jwt_token = cookie[len(SESSION_JWT_KEY):]
             return jwt_token
     return None
 
 def _find_user_from_ldap(username, sm):
     """extracted from flask_appbuilder.security.manager.BaseSecurityManager.auth_user_ldap(self, username, password)"""
     user = sm.find_user(username)
-    if not user and config.AUTH_USER_REGISTRATION:
-        con = ldap.initialize(config.AUTH_LDAP_SERVER)
+    if not user and AUTH_USER_REGISTRATION:
+        con = ldap.initialize(AUTH_LDAP_SERVER)
         con.set_option(ldap.OPT_REFERRALS, 0)
         # TODO: Missing management of AUTH_LDAP_USE_TLS
-        indirect_user = config.AUTH_LDAP_BIND_USER
+        indirect_user = AUTH_LDAP_BIND_USER
         if indirect_user:
-            indirect_password = config.AUTH_LDAP_BIND_PASSWORD
+            indirect_password = AUTH_LDAP_BIND_PASSWORD
             log.debug("LDAP indirect bind with: {0}".format(indirect_user))
             con.bind_s(indirect_user, indirect_password)
             log.debug("LDAP BIND indirect OK")
@@ -83,10 +114,9 @@ def _find_user_from_ldap(username, sm):
     return user
 
 def parse_hadoop_jwt():
-    auth_url = "https://172.17.0.1:8443/gateway-ti/knoxsso/knoxauth/login.html?originalUrl=https://172.17.0.1:8443/gateway-ti/sandbox/superset"
     
-    log.info("Request URL: %s"%request.url)
-    log.info("Headers: %s"%dict(request.headers))
+    log.debug("Request URL: %s"%request.url)
+    log.debug("Headers: %s"%dict(request.headers))
     if g.user is not None and g.user.is_authenticated:
         log.info("Already authenticated: %s"%g.user)
         return None
@@ -95,13 +125,12 @@ def parse_hadoop_jwt():
     log.debug("Token: %s"%jwt_token)
     if not jwt_token:
         log.info("Failed parsing token")
-        return redirect(auth_url)
+        return redirect(AUTH_SERVICE_URL)
     username = _get_jwt_username(jwt_token)
     log.debug("Username %s"%username)
     user = _find_user_from_ldap(username, security_manager)
     if not user:
         log.info("Authentication failed for user: %s"%user)
-        return redirect(auth_url)
+        return redirect(AUTH_SERVICE_URL)
     login_user(user, remember=False)
     return None
-

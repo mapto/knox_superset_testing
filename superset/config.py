@@ -374,11 +374,18 @@ JINJA_CONTEXT_ADDONS = {}
 ROBOT_PERMISSION_ROLES = ['Public', 'Gamma', 'Alpha', 'Admin', 'sql_lab']
 
 CONFIG_PATH_ENV_VAR = 'SUPERSET_CONFIG_PATH'
+"""
+def parse_jwt():
+    logging.debug("Authentication before call")
+    from .knox_auth import parse_hadoop_jwt
+    return parse_hadoop_jwt()
 
+import ipdb; ipdb.set_trace()
+"""
 # If a callable is specified, it will be called at app startup while passing
 # a reference to the Flask app. This can be used to alter the Flask app
 # in whatever way.
-# example: FLASK_APP_MUTATOR = lambda x: x.before_request = f
+# FLASK_APP_MUTATOR = lambda x: x.before_request = parse_jwt
 FLASK_APP_MUTATOR = None
 
 # Set this to false if you don't want users to be able to request/grant
