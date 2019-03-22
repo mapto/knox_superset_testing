@@ -60,6 +60,11 @@
             <rewrite apply="SUPERSET/superset/outbound/links" to="response.body"/>
             <rewrite apply="SUPERSET/superset/outbound/headers" to="response.headers"/>
         </route>
+
+        <route path="/superset/logout/">
+            <rewrite apply="SUPERSET/superset/inbound/logout" to="request.url"/>
+            <rewrite apply="SUPERSET/superset/outbound/logout/headers" to="response.headers"/>
+        </route>
 <!-- 
         <route path="/superset/users/userinfo">
             <rewrite apply="SUPERSET/superset/inbound/userinfo" to="request.url"/>

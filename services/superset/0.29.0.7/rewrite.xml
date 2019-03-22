@@ -92,6 +92,11 @@
     <rewrite template="{$serviceUrl[SUPERSET]}/users/userinfo{**}"/>
   </rule>
  -->
+
+  <rule dir="IN" name="SUPERSET/superset/inbound/logout" pattern="*://*:*/**/superset/logout/">
+    <rewrite template="{$serviceUrl[SUPERSET]}/logout/"/>
+  </rule>
+
   <!-- filter rules -->
 <!-- 
   <filter name="SUPERSET/superset/outbound/filter/contextpath">
@@ -105,10 +110,18 @@
       <apply path="Location" rule="SUPERSET/superset/outbound/headers/location"/>
     </content>
   </filter>
+  <filter name="SUPERSET/superset/outbound/logout/headers">
+    <content type="application/x-http-headers">
+      <apply path="Location" rule="SUPERSET/superset/outbound/logout/headers/location"/>
+    </content>
+  </filter>
 
   <!-- response headers rules -->
   <rule dir="OUT" name="SUPERSET/superset/outbound/headers/location" pattern="*://*:*/{**}">
     <rewrite template="{$frontend[url]}/superset/{**}/"/>
+  </rule>
+  <rule dir="OUT" name="SUPERSET/superset/outbound/logout/headers/location" pattern="*://*:*/">
+    <rewrite template="{$frontend[url]}/superset/"/>
   </rule>
 
   <!-- response body rules -->
@@ -118,22 +131,22 @@
   <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/superset/{**}">
     <rewrite template="{$frontend[path]}/superset/superset/{**}"/>
   </rule>
-<!-- 
   <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/dashboard/{**}">
     <rewrite template="{$frontend[path]}/superset/dashboard/{**}"/>
   </rule>
- -->
   <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/static/{**}">
     <rewrite template="{$frontend[path]}/superset/static/{**}"/>
   </rule>
   <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/lang/{**}">
     <rewrite template="{$frontend[path]}/superset/lang/{**}"/>
   </rule>
-<!-- 
+  <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/logout/">
+    <rewrite template="{$frontend[path]}/superset/logout/"/>
+  </rule>
   <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/users/{**}">
     <rewrite template="{$frontend[path]}/superset/users/{**}"/>
   </rule>
- --> 
+ 
 <!-- 
   <rule dir="OUT" name="SUPERSET/superset/outbound/contextpath">
     <rewrite template="{$frontend[path]}/superset/"/>

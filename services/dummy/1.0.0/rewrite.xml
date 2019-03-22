@@ -131,7 +131,7 @@
       <!-- <rewrite template="{scheme}://{host}:{port}/{gateway}/{knoxsso}/{api}/{v1}/{websso}?originalUrl={$postfix[url,/dummy/]}"/> -->
   </rule>
   <rule dir="OUT" name="DUMMY/dummy/outbound/logout/headers/cookie">
-      <rewrite template="hadoop-jwt=empty; session=empty; remember_token=0|empty"/>
+      <rewrite template="hadoop-jwt=; session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"/>
       <!-- <rewrite template="{$frontend[url]}/dummy/"/> -->
       <!-- <rewrite template="{gateway.url}/dummy/{**}?{**}"/> -->
       <!-- <rewrite template="{scheme}://{host}:{port}/{gateway}/{knoxsso}/{api}/{v1}/{websso}?originalUrl={$postfix[url,/dummy/]}"/> -->

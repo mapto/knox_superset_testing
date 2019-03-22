@@ -6,7 +6,7 @@ from OpenSSL._util import lib as cryptolib
 import ldap
 
 from flask import g, redirect, request, flash
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from flask_appbuilder import expose
 from flask_appbuilder._compat import as_unicode
 from flask_appbuilder.security.views import AuthLDAPView
@@ -20,7 +20,6 @@ log = logging.getLogger(__name__)
 from . import config
 
 jks_file = "/etc/ssl/keystores/gateway.jks"
-session_jwt_key = "hadoop-jwt="
 
 def pem_publickey(pkey):
     """ Format a public key as a PEM. From https://stackoverflow.com/a/30929459/1827854"""
@@ -43,16 +42,6 @@ def _get_jwt_username(token):
     username = contents['sub']
     log.info("Username %s"%(username))
     return username
-
-def _get_jwt_token(cookie_header):
-    if not cookie_header:
-        return None
-    for c in cookie_header.split(";"):
-        cookie = c.strip()
-        if cookie.startswith(session_jwt_key):
-            jwt_token = cookie.strip()[len(session_jwt_key):]
-            return jwt_token
-    return None
 
 def _find_user_from_ldap(username, sm):
     """extracted from flask_appbuilder.security.manager.BaseSecurityManager.auth_user_ldap(self, username, password)"""
@@ -83,15 +72,22 @@ def _find_user_from_ldap(username, sm):
     return user
 
 def parse_hadoop_jwt():
-    auth_url = "https://172.17.0.1:8443/gateway-ti/knoxsso/knoxauth/login.html?originalUrl=https://172.17.0.1:8443/gateway-ti/sandbox/superset"
+    auth_url = "/gateway-ti/knoxsso/knoxauth/login.html?originalUrl=/gateway-ti/sandbox/superset"
+    # auth_url = "https://172.17.0.1:8443/gateway-ti/knoxsso/knoxauth/login.html?originalUrl=https://172.17.0.1:8443/gateway-ti/sandbox/superset"
+    # auth_url = "https://172.17.0.1:80/gateway-ti/knoxsso/knoxauth/login.html?originalUrl=https://172.17.0.1:80/gateway-ti/sandbox/superset"
     
     log.info("Request URL: %s"%request.url)
     log.info("Headers: %s"%dict(request.headers))
+    if "logout" in request.url:
+        logout_user()
+        # TODO: Remove hadoop-jwt cookie
+        return redirect(auth_url)
+
     if g.user is not None and g.user.is_authenticated:
         log.info("Already authenticated: %s"%g.user)
         return None
 
-    jwt_token = _get_jwt_token(request.headers.get("Cookie"))
+    jwt_token = request.cookies["hadoop-jwt"]
     log.debug("Token: %s"%jwt_token)
     if not jwt_token:
         log.info("Failed parsing token")
