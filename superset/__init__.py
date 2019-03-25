@@ -1,5 +1,5 @@
 # pylint: disable=C,R,W
-"""Package's main module!"""
+"""KnoxSSO integrations injected into the package's main module!"""
 import json
 import logging
 from logging.handlers import TimedRotatingFileHandler

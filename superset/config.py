@@ -1,5 +1,5 @@
 # pylint: disable=C,R,W
-"""The main config file for Superset
+"""Configuration injected into the main config file for Superset, because using superset_config as suggested below doesn't seem to catch on.
 
 All configuration in this file can be overridden by providing a superset_config
 in your PYTHONPATH as there is a ``from superset_config import *``

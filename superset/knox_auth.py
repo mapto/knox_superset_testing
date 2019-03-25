@@ -1,3 +1,6 @@
+"""The necessary logic for parsing the hadoop-jwt cookie.
+Further details: https://svn.apache.org/repos/asf/knox/site/books/knox-1-2-0/knoxsso_integration.html
+"""
 import base64
 import jwt
 import jks
@@ -72,9 +75,7 @@ def _find_user_from_ldap(username, sm):
     return user
 
 def parse_hadoop_jwt():
-    auth_url = "/gateway-ti/knoxsso/knoxauth/login.html?originalUrl=/gateway-ti/sandbox/superset"
-    # auth_url = "https://172.17.0.1:8443/gateway-ti/knoxsso/knoxauth/login.html?originalUrl=https://172.17.0.1:8443/gateway-ti/sandbox/superset"
-    # auth_url = "https://172.17.0.1:80/gateway-ti/knoxsso/knoxauth/login.html?originalUrl=https://172.17.0.1:80/gateway-ti/sandbox/superset"
+    auth_url = "/gateway/knoxsso/knoxauth/login.html?originalUrl=/gateway/sandbox/superset"
     
     log.info("Request URL: %s"%request.url)
     log.info("Headers: %s"%dict(request.headers))
@@ -87,7 +88,7 @@ def parse_hadoop_jwt():
         log.info("Already authenticated: %s"%g.user)
         return None
 
-    jwt_token = request.cookies["hadoop-jwt"]
+    jwt_token = request.cookies.get("hadoop-jwt", None)
     log.debug("Token: %s"%jwt_token)
     if not jwt_token:
         log.info("Failed parsing token")

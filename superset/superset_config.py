@@ -1,3 +1,5 @@
+"""Alternative to the other files, attempting to make the necessary extensions without injecting into the superset code"""
+
 SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
 SUPERSET_WEBSERVER_PORT = 8088
 ENABLE_PROXY_FIX = True
@@ -28,9 +30,8 @@ FLASK_APP_MUTATOR = lambda app: attach_handler(app)
 
 # Locally used variables
 JKS_FILE = "/etc/ssl/keystores/gateway.jks"
-SESSION_JWT_KEY = "hadoop-jwt="
 # Requires changes also in KnoxSSO's gateway-site.xml and sandbox.xml
-AUTH_SERVICE_URL = "https://172.17.0.1:8443/gateway-ti/knoxsso/knoxauth/login.html?originalUrl=https://172.17.0.1:8443/gateway-ti/sandbox/superset"
+AUTH_SERVICE_URL = "/gateway/knoxsso/knoxauth/login.html?originalUrl=/gateway/sandbox/superset"
 
 
 # import base64
@@ -75,16 +76,6 @@ def _get_jwt_username(token):
     log.info("Username %s"%(username))
     return username
 
-def _get_jwt_token(cookie_header):
-    if not cookie_header:
-        return None
-    for c in cookie_header.split(";"):
-        cookie = c.strip()
-        if cookie.startswith(SESSION_JWT_KEY):
-            jwt_token = cookie[len(SESSION_JWT_KEY):]
-            return jwt_token
-    return None
-
 def _find_user_from_ldap(username, sm):
     """extracted from flask_appbuilder.security.manager.BaseSecurityManager.auth_user_ldap(self, username, password)"""
     user = sm.find_user(username)
@@ -121,7 +112,7 @@ def parse_hadoop_jwt():
         log.info("Already authenticated: %s"%g.user)
         return None
 
-    jwt_token = _get_jwt_token(request.headers.get("Cookie"))
+    jwt_token = request.cookies.get("hadoop-jwt", None)
     log.debug("Token: %s"%jwt_token)
     if not jwt_token:
         log.info("Failed parsing token")
