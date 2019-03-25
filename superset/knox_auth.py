@@ -75,14 +75,15 @@ def _find_user_from_ldap(username, sm):
     return user
 
 def parse_hadoop_jwt():
-    auth_url = "/gateway/knoxsso/knoxauth/login.html?originalUrl=/gateway/sandbox/superset"
+    auth_service = "/gateway/"
+    login_url = auth_service + "knoxsso/knoxauth/login.html?originalUrl=/gateway/sandbox/superset"
+    logout_url = auth_service + "knoxssout/api/v1/webssout"
     
     log.info("Request URL: %s"%request.url)
     log.info("Headers: %s"%dict(request.headers))
     if "logout" in request.url:
         logout_user()
-        # TODO: Remove hadoop-jwt cookie
-        return redirect(auth_url)
+        return redirect(logout_url)
 
     if g.user is not None and g.user.is_authenticated:
         log.info("Already authenticated: %s"%g.user)
@@ -92,13 +93,13 @@ def parse_hadoop_jwt():
     log.debug("Token: %s"%jwt_token)
     if not jwt_token:
         log.info("Failed parsing token")
-        return redirect(auth_url)
+        return redirect(login_url)
     username = _get_jwt_username(jwt_token)
     log.debug("Username %s"%username)
     user = _find_user_from_ldap(username, security_manager)
     if not user:
         log.info("Authentication failed for user: %s"%user)
-        return redirect(auth_url)
+        return redirect(login_url)
     login_user(user, remember=False)
     return None
 

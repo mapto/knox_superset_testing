@@ -16,7 +16,7 @@
  */
 
 // Also update in Knox gateway-site.xml and other files referenced from there
-var loginURL = "/gateway-ti/knoxsso/api/v1/websso?originalUrl=";
+var loginURL = "/gateway/knoxsso/api/v1/websso?originalUrl=";
 var userAgent = navigator.userAgent.toLowerCase();
 var firstLogIn = true;
 

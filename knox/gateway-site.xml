@@ -22,13 +22,14 @@ limitations under the License.
         <name>gateway.port</name>
         <value>8443</value>
         <!-- <value>80</value> -->
-        <!-- need to be specified also in topology *.xml files and superset_config.py -->
+        <!-- need to be specified also in topology sandbox.xml files and knox_auth.py -->
         <description>The HTTP port for the Gateway.</description>
     </property>
 
     <property>
         <name>gateway.path</name>
         <value>gateway</value>
+        <!-- need to be specified also in topology files, knoxauth.js and knox_auth.py -->
         <description>The default context path for the gateway.</description>
     </property>
 
