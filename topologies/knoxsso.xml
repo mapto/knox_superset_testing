@@ -43,7 +43,7 @@
             <param>
                 <name>redirectToUrl</name>
                 <!-- also specified in gateway-site.xml -->
-                <value>/gateway-ti/knoxsso/knoxauth/login.html</value>
+                <value>/gateway/knoxsso/knoxauth/login.html</value>
             </param>
             <param>
                 <name>restrictedCookies</name>
