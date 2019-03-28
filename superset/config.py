@@ -482,7 +482,7 @@ try:
 except ImportError:
     pass
 
-JKS_FILE = "/home/bigdata/knox/data/security/keystores/gateway.jks"
-KNOX_GATEWAY_PATH = "gateway-te"
-KNOX_SERVICE_TOPOLOGY = "sandbox"
-
+# KnoxSSO integration constants
+JKS_FILE = "/home/bigdata/knox/data/security/keystores/gateway.jks"  # location of Gateway Java keystore
+KNOX_GATEWAY_PATH = "gateway"  # name of Gateway root path, specified in knox/conf/gateway-site.xml
+KNOX_SERVICE_TOPOLOGY = "sandbox"  # name of the Gateway topology that serves Superset, specified by the corresponding file name in knox/conf/topologies
