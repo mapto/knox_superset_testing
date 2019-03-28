@@ -12,7 +12,7 @@ services:
     build:
       context: superset
       args:
-        SUPERSET_VERSION: 0.29.0rc7
+        SUPERSET_VERSION: 0.28.0
     # image: knoxsupersettesting_superset
     container_name: kst_superset
     ports:

@@ -47,10 +47,6 @@ SUPERSET_DASHBOARD_POSITION_DATA_LIMIT = 65535
 EMAIL_NOTIFICATIONS = False
 
 CUSTOM_SECURITY_MANAGER = None
-# from .knox_auth import BasicAuthSecurityManager
-# from .knox_auth import JwtSecurityManager
-# CUSTOM_SECURITY_MANAGER = JwtSecurityManager
-
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 # ---------------------------------------------------------
 
@@ -374,14 +370,6 @@ JINJA_CONTEXT_ADDONS = {}
 ROBOT_PERMISSION_ROLES = ['Public', 'Gamma', 'Alpha', 'Admin', 'sql_lab']
 
 CONFIG_PATH_ENV_VAR = 'SUPERSET_CONFIG_PATH'
-"""
-def parse_jwt():
-    logging.debug("Authentication before call")
-    from .knox_auth import parse_hadoop_jwt
-    return parse_hadoop_jwt()
-
-import ipdb; ipdb.set_trace()
-"""
 # If a callable is specified, it will be called at app startup while passing
 # a reference to the Flask app. This can be used to alter the Flask app
 # in whatever way.
@@ -493,3 +481,8 @@ try:
             superset_config.__file__))
 except ImportError:
     pass
+
+JKS_FILE = "/home/bigdata/knox/data/security/keystores/gateway.jks"
+KNOX_GATEWAY_PATH = "gateway-te"
+KNOX_SERVICE_TOPOLOGY = "sandbox"
+

@@ -211,9 +211,11 @@ if flask_app_mutator:
 
 from superset import views  # noqa
 
+# START PATCH Knox-Superset
 @app.before_request
 def parse_jwt():
     logging.info("Attaching JWT handler")
     from .knox_auth import parse_hadoop_jwt
     return parse_hadoop_jwt()
+# END PATCH Knox-Superset
 

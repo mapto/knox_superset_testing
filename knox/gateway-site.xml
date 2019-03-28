@@ -21,8 +21,7 @@ limitations under the License.
     <property>
         <name>gateway.port</name>
         <value>8443</value>
-        <!-- <value>80</value> -->
-        <!-- need to be specified also in topology sandbox.xml files and knox_auth.py -->
+        <!-- need to be specified also in the topology's sandbox.xml -->
         <description>The HTTP port for the Gateway.</description>
     </property>
 
