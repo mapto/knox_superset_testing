@@ -62,12 +62,6 @@
         of box sandbox.xml.  This is because Sandbox uses port mapping to allow clients to connect to the
         Hadoop services using localhost.  In real clusters, external host names would almost never be localhost.
         -->
-        <provider>
-            <role>hostmap</role>
-            <name>static</name>
-            <enabled>false</enabled>
-            <param><name>localhost</name><value>sandbox,sandbox.hortonworks.com</value></param>
-        </provider>
     </gateway>
 
     <service>

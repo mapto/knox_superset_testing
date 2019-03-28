@@ -92,11 +92,11 @@
     <rewrite template="{$serviceUrl[SUPERSET]}/users/userinfo{**}"/>
   </rule>
  -->
-
+<!-- 
   <rule dir="IN" name="SUPERSET/superset/inbound/logout" pattern="*://*:*/**/superset/logout/">
     <rewrite template="{$serviceUrl[SUPERSET]}/logout/"/>
   </rule>
-
+ -->
   <!-- filter rules -->
 <!-- 
   <filter name="SUPERSET/superset/outbound/filter/contextpath">
@@ -137,14 +137,18 @@
   <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/static/{**}">
     <rewrite template="{$frontend[path]}/superset/static/{**}"/>
   </rule>
+  <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/sqllab/{**}">
+    <rewrite template="{$frontend[path]}/superset/sqllab/{**}"/>
+  </rule>
   <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/lang/{**}">
     <rewrite template="{$frontend[path]}/superset/lang/{**}"/>
   </rule>
-  <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/logout/">
-    <rewrite template="{$frontend[path]}/superset/logout/"/>
-  </rule>
   <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/users/{**}">
     <rewrite template="{$frontend[path]}/superset/users/{**}"/>
+  </rule>
+
+  <rule dir="OUT" name="SUPERSET/superset/outbound/links" pattern="/logout/">
+    <rewrite template="{gateway.url}/../knoxssout/api/v1/webssout"/>
   </rule>
  
 <!-- 

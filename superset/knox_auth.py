@@ -76,14 +76,11 @@ def _find_user_from_ldap(username, sm):
 
 def parse_hadoop_jwt():
     auth_service = "/gateway/"
-    login_url = auth_service + "knoxsso/knoxauth/login.html?originalUrl=/gateway/sandbox/superset"
+    login_url = auth_service + "knoxsso/knoxauth/login.html?originalUrl=" + auth_service + "sandbox/superset"
     logout_url = auth_service + "knoxssout/api/v1/webssout"
     
     log.info("Request URL: %s"%request.url)
     log.info("Headers: %s"%dict(request.headers))
-    if "logout" in request.url:
-        logout_user()
-        return redirect(logout_url)
 
     if g.user is not None and g.user.is_authenticated:
         log.info("Already authenticated: %s"%g.user)
