@@ -1,1 +1,1 @@
-Represents Superset [v.0.29.0rc7](https://github.com/apache/incubator-superset/releases/tag/0.29.0rc7). Version number adapted, because Knox parsing cannot process the format.
+Exposes only home and sqllab pages.
